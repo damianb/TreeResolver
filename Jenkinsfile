@@ -16,7 +16,7 @@ pipeline {
   }
   agent {
     docker {
-      image 'node:8.11.1-alpine'
+      image 'node:8.12.0-alpine'
     }
   }
   environment {
@@ -25,7 +25,7 @@ pipeline {
   stages {
     stage('Prepare') {
       environment {
-        YARN_VERSION = '1.6.0'
+        YARN_VERSION = '1.11.1'
         NPM_CONFIG_LOGLEVEL = 'warn'
       }
       steps {
