@@ -1,10 +1,3 @@
-//
-// project lunacy
-// ---
-// @copyright (c) Damian Bushong <katana@odios.us>
-// @license All Rights Reserved
-//
-
 import { expect } from 'chai'
 import { TreeResolver, TreeNode, TreeResolverResult } from '../src/TreeResolver'
 

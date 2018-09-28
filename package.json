@@ -12,7 +12,7 @@
   },
   "keywords": [
     "dependency",
-	"resolution",
+    "resolution",
     "TreeResolver"
   ],
   "bugs": {
@@ -20,12 +20,14 @@
   },
   "homepage": "https://github.com/damianb/TreeResolver#readme",
   "scripts": {
+    "docs": "typedoc --out docs/ --mode file ./src/ --theme minimal",
     "build": "tsc -p ./tsconfig.json",
     "clean": "rimraf ./dist/* && mkdirp ./dist",
-    "style": "tslint ./src/*.ts ./src/**/*.ts -c ./tslint.json -p ./tsconfig.json --project",
+    "style": "tslint ./src/*.ts -p ./tsconfig.json",
     "unit": "mocha --require ts-node/register ./tests/*.spec.ts",
     "test": "npm run clean && npm run build && npm run style && npm run unit",
-    "todo": "fixme --path ./ src/**/*.ts src/*.ts --skip note"
+    "todo": "fixme --path ./ src/**/*.ts src/*.ts --skip note",
+    "prepublishOnly": "npm run clean && npm run docs && npm run build && npm run style && npm run unit"
   },
   "devDependencies": {
     "@types/chai": "^4.1.3",
