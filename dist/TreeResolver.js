@@ -6,6 +6,10 @@
 // @license MIT license
 //
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * TreeResolver is a single-parent dependency resolution algorithm,
+ *   made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.
+ */
 class TreeResolver {
     constructor() {
         this.nodes = [];

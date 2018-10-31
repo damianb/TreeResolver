@@ -1,28 +1,9 @@
-export interface TreeNode {
-    instance?: any;
-    name: string;
-    parent: string | null;
-    parentNode: TreeNode | null;
-    rootNode: TreeNode | null;
-    children: {
-        [index: string]: TreeNode;
-    };
-    allDescendants: {
-        [index: string]: TreeNode;
-    };
-    allAncestors: {
-        [index: string]: TreeNode;
-    };
-}
-export interface TreeResolverResult {
-    nodes: {
-        [index: string]: TreeNode;
-    };
-    nodeList: {
-        [index: string]: TreeNode;
-    };
-    unlinkedNodes: TreeNode[];
-}
+import { TreeNode } from './interfaces/TreeNode';
+import { TreeResolverResult } from './interfaces/TreeResolverResult';
+/**
+ * TreeResolver is a single-parent dependency resolution algorithm,
+ *   made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.
+ */
 export declare class TreeResolver {
     protected nodes: TreeNode[];
     /**
