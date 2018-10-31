@@ -1,5 +1,7 @@
 import { expect } from 'chai'
-import { TreeResolver, TreeNode, TreeResolverResult } from '../src/TreeResolver'
+import { TreeResolver } from '../src/index'
+
+import { TreeNode } from '../src/interfaces/TreeNode'
 
 interface InstanceInput {
   name: string
@@ -51,7 +53,7 @@ describe('TreeResolver', () => {
     await Promise.all(instances.map((instance: InstanceInput) => {
       return tree.addInstance(instance.name, instance.parent || null)
     }))
-    const res: TreeResolverResult = await tree.build()
+    const res = await tree.build()
     nodes = res.nodes
     nodeList = res.nodeList
     unlinkedNodes = res.unlinkedNodes
