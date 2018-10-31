@@ -5,28 +5,13 @@
 // @license MIT license
 //
 
-//
-// TreeResolver is a single-parent dependency resolution algorithm,
-//   made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.
-//
+import { TreeNode } from './interfaces/TreeNode'
+import { TreeResolverResult } from './interfaces/TreeResolverResult'
 
-export interface TreeNode {
-  instance?: any
-  name: string
-  parent: string | null
-  parentNode: TreeNode | null
-  rootNode: TreeNode | null
-  children: { [index: string]: TreeNode }
-  allDescendants: { [index: string]: TreeNode }
-  allAncestors: { [index: string]: TreeNode }
-}
-
-export interface TreeResolverResult {
-  nodes: { [index: string]: TreeNode }
-  nodeList: { [index: string]: TreeNode }
-  unlinkedNodes: TreeNode[]
-}
-
+/**
+ * TreeResolver is a single-parent dependency resolution algorithm,
+ *   made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.
+ */
 export class TreeResolver {
   protected nodes: TreeNode[] = []
 

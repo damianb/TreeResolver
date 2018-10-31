@@ -1,6 +1,8 @@
 # TreeResolver
 
-TreeResolver is a single-parent dependency resolution algorithm, made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.
+TreeResolver is dependency resolution library, made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.
+
+TreeResolver itself provides single-parent dependency resolution, whilst DepResolver provides multi-parent dependency resolution.
 
 Written in TypeScript.
 
@@ -11,6 +13,8 @@ MIT license; see ./LICENSE
 ## documentation
 
 Automatically generated documentation is available in /docs/.
+
+### TreeResolver - Single-parent dependency resolution
 
 Usage is fairly simple.  Create a new TreeResolver instance, add new instances by declaring their names, dependencies, and optional dependencies, and then build the relationship tree.
 The result should be a well-structured dependency tree free of unresolvable and circular dependencies.
@@ -81,6 +85,88 @@ const tree = new TreeResolver()
        allAncestors: {} } ] }
  */
 
+// nodes will contain a hierarchial tree map, keyed by name of the node
+// nodeList will contain ALL nodes that were able to be mapped, keyed by the name of the node
+// unlinkedNodes will contain an array of all nodes which could not be mapped, such as if
+//   they had unresolvable dependencies or a circular dependency.
+```
+
+### DepResolver - Multi-parent dependency resolution
+
+Usage is fairly simple.  Create a new DepResolver instance, add new instances by declaring their names, dependencies, and optional dependencies, and then build the relationship tree.
+The result should be a well-structured dependency tree free of unresolvable and circular dependencies.
+
+``` ts
+import { DepResolver } from 'DepResolver'
+const tree = new DepResolver()
+
+(async () => {
+  await tree.addInstance('node 1')
+  await tree.addInstance('node 2', [], ['node 4']) // has an optional dependency on "node 4", which will not exist
+  await tree.addInstance('node 3', ['node 2'])
+  await tree.addInstance('node 5', ['node 1', 'node 2', 'node 3'])
+
+  const res = await tree.build()
+  console.dir(res)
+})()
+
+/*
+> { nodes:
+   { 'node 1':
+      { name: 'node 1',
+        parents: {},
+        children: [Object],
+        allDescendants: [Object],
+        allAncestors: {},
+        _parentNames: [],
+        _optParentNames: [] },
+     'node 2':
+      { name: 'node 2',
+        parents: {},
+        children: [Object],
+        allDescendants: [Object],
+        allAncestors: {},
+        _parentNames: [],
+        _optParentNames: [Array] } },
+  nodeList:
+   { 'node 1':
+      { name: 'node 1',
+        parents: {},
+        children: [Object],
+        allDescendants: [Object],
+        allAncestors: {},
+        _parentNames: [],
+        _optParentNames: [] },
+     'node 2':
+      { name: 'node 2',
+        parents: {},
+        children: [Object],
+        allDescendants: [Object],
+        allAncestors: {},
+        _parentNames: [],
+        _optParentNames: [Array] },
+     'node 3':
+      { name: 'node 3',
+        parents: [Object],
+        children: [Object],
+        allDescendants: [Object],
+        allAncestors: [Object],
+        _parentNames: [Array],
+        _optParentNames: [] },
+     'node 5':
+      { name: 'node 5',
+        parents: [Object],
+        children: {},
+        allDescendants: {},
+        allAncestors: [Object],
+        _parentNames: [Array],
+        _optParentNames: [] } },
+  unlinkedNodes: [] }
+ */
+
+// upon closer inspection of the tree, you'll notice that the node
+//   for 'node 2' contains its appropriate descendants in correct lineage, along with others.
+//
 // nodes will contain a hierarchial tree map, keyed by name of the node
 // nodeList will contain ALL nodes that were able to be mapped, keyed by the name of the node
 // unlinkedNodes will contain an array of all nodes which could not be mapped, such as if
