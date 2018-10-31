@@ -1,5 +1,5 @@
 {
-  "name": "TreeResolver",
+  "name": "treeresolver",
   "version": "1.0.2",
   "description": "TreeResolver is a single-parent dependency resolution algorithm, made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.",
   "license": "MIT",
