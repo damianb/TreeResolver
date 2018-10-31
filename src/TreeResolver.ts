@@ -88,13 +88,16 @@ export class TreeResolver {
           resolveQueue[node.name] = []
         }
         result.nodes[node.name] = node
+
         keyQueue.push(node.name)
       } else {
         if (!resolveQueue[node.parent]) {
           resolveQueue[node.parent] = []
         }
+
         resolveQueue[node.parent].push(node)
       }
+
       result.nodeList[node.name] = node
     })
     await Promise.all(promises)
@@ -117,11 +120,7 @@ export class TreeResolver {
           node.allAncestors[node.parent] = node.parentNode
 
           // get rootNode ref from parent, or if parent doesn't have a rootNode, assume it *is* a rootNode
-          if (node.parentNode.rootNode) {
-            node.rootNode = node.parentNode.rootNode
-          } else {
-            node.rootNode = node.parentNode
-          }
+          node.rootNode = node.parentNode.rootNode || node.parentNode
 
           // add this node to every parent's .allDescendants property
           let parentNode = node
@@ -129,6 +128,7 @@ export class TreeResolver {
             // more guarding because TypeScript is stupid...
             if (!parentNode.parentNode) { break }
             parentNode = parentNode.parentNode
+
             parentNode.allDescendants[node.name] = node
             node.allAncestors[parentNode.name] = parentNode
           }
