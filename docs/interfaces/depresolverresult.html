@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>treeresolver | treeresolver</title>
+	<title>DepResolverResult | treeresolver</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -879,7 +879,7 @@ img { max-width: 100%; }
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">treeresolver</a></strong>
+					<strong><a href="../index.html">treeresolver</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -910,214 +910,95 @@ img { max-width: 100%; }
 <nav class="tsd-navigation secondary">
 	<ul>
 		<li class=" tsd-kind-class">
-			<a href="classes/depresolver.html" class="tsd-kind-icon">Dep<wbr>Resolver</a>
+			<a href="../classes/depresolver.html" class="tsd-kind-icon">Dep<wbr>Resolver</a>
 		</li>
 		<li class=" tsd-kind-class">
-			<a href="classes/treeresolver.html" class="tsd-kind-icon">Tree<wbr>Resolver</a>
+			<a href="../classes/treeresolver.html" class="tsd-kind-icon">Tree<wbr>Resolver</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="interfaces/depnode.html" class="tsd-kind-icon">Dep<wbr>Node</a>
+			<a href="depnode.html" class="tsd-kind-icon">Dep<wbr>Node</a>
+		</li>
+		<li class="current tsd-kind-interface">
+			<a href="depresolverresult.html" class="tsd-kind-icon">Dep<wbr>Resolver<wbr>Result</a>
+			<ul>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="depresolverresult.html#nodelist" class="tsd-kind-icon">node<wbr>List</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="depresolverresult.html#nodes" class="tsd-kind-icon">nodes</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface">
+					<a href="depresolverresult.html#unlinkednodes" class="tsd-kind-icon">unlinked<wbr>Nodes</a>
+				</li>
+			</ul>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="interfaces/depresolverresult.html" class="tsd-kind-icon">Dep<wbr>Resolver<wbr>Result</a>
+			<a href="nodemap.html" class="tsd-kind-icon">Node<wbr>Map</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="interfaces/nodemap.html" class="tsd-kind-icon">Node<wbr>Map</a>
+			<a href="treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="interfaces/treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a>
-		</li>
-		<li class=" tsd-kind-interface">
-			<a href="interfaces/treeresolverresult.html" class="tsd-kind-icon">Tree<wbr>Resolver<wbr>Result</a>
+			<a href="treeresolverresult.html" class="tsd-kind-icon">Tree<wbr>Resolver<wbr>Result</a>
 		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
-		<div class="tsd-panel tsd-typography">
-			<h1 id="treeresolver">TreeResolver</h1>
-			<p>TreeResolver is dependency resolution library, made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.</p>
-			<p>TreeResolver itself provides single-parent dependency resolution, whilst DepResolver provides multi-parent dependency resolution.</p>
-			<p>Written in TypeScript.</p>
-			<h2 id="license">license</h2>
-			<p>MIT license; see ./LICENSE</p>
-			<h2 id="documentation">documentation</h2>
-			<p>Automatically generated documentation is available in /docs/.</p>
-			<h3 id="treeresolver-single-parent-dependency-resolution">TreeResolver - Single-parent dependency resolution</h3>
-			<p>Usage is fairly simple.  Create a new TreeResolver instance, add new instances by declaring their names, dependencies, and optional dependencies, and then build the relationship tree.
-			The result should be a well-structured dependency tree free of unresolvable and circular dependencies.</p>
-			<pre><code class="language-ts"><span class="hljs-keyword">import</span> { TreeResolver } <span class="hljs-keyword">from</span> <span class="hljs-string">'TreeResolver'</span>
-<span class="hljs-keyword">const</span> tree = <span class="hljs-keyword">new</span> TreeResolver()
-
-(<span class="hljs-keyword">async</span> () =&gt; {
-  <span class="hljs-keyword">await</span> tree.addInstance(<span class="hljs-string">'node 1'</span>)
-  <span class="hljs-keyword">await</span> tree.addInstance(<span class="hljs-string">'node 2'</span>, <span class="hljs-string">'node 1'</span>)
-  <span class="hljs-keyword">await</span> tree.addInstance(<span class="hljs-string">'node 3'</span>, <span class="hljs-string">'node 4'</span>) <span class="hljs-comment">// node 4 does not exist...</span>
-  <span class="hljs-keyword">await</span> tree.addInstance(<span class="hljs-string">'node 5'</span>, <span class="hljs-string">'node 2'</span>)
-
-  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> tree.build()
-  <span class="hljs-built_in">console</span>.dir(res)
-})()
-<span class="hljs-comment">/*
-&gt; { nodes:
-   { 'node 1':
-      { name: 'node 1',
-        parent: undefined,
-        parentNode: null,
-        rootNode: null,
-        children: [Object],
-        allDescendants: [Object],
-        allAncestors: {} } },
-  nodeList:
-   { 'node 1':
-      { name: 'node 1',
-        parent: undefined,
-        parentNode: null,
-        rootNode: null,
-        children: [Object],
-        allDescendants: [Object],
-        allAncestors: {} },
-     'node 2':
-      { name: 'node 2',
-        parent: 'node 1',
-        parentNode: [Object],
-        rootNode: [Object],
-        children: [Object],
-        allDescendants: [Object],
-        allAncestors: [Object] },
-     'node 3':
-      { name: 'node 3',
-        parent: 'node 4',
-        parentNode: null,
-        rootNode: null,
-        children: {},
-        allDescendants: {},
-        allAncestors: {} },
-     'node 5':
-      { name: 'node 5',
-        parent: 'node 2',
-        parentNode: [Object],
-        rootNode: [Object],
-        children: {},
-        allDescendants: {},
-        allAncestors: [Object] } },
-  unlinkedNodes:
-   [ { name: 'node 3',
-       parent: 'node 4',
-       parentNode: null,
-       rootNode: null,
-       children: {},
-       allDescendants: {},
-       allAncestors: {} } ] }
- */</span>
-
-<span class="hljs-comment">// nodes will contain a hierarchial tree map, keyed by name of the node</span>
-<span class="hljs-comment">// nodeList will contain ALL nodes that were able to be mapped, keyed by the name of the node</span>
-<span class="hljs-comment">// unlinkedNodes will contain an array of all nodes which could not be mapped, such as if</span>
-<span class="hljs-comment">//   they had unresolvable dependencies or a circular dependency.</span></code></pre>
-			<h3 id="depresolver-multi-parent-dependency-resolution">DepResolver - Multi-parent dependency resolution</h3>
-			<p>Usage is fairly simple.  Create a new DepResolver instance, add new instances by declaring their names, dependencies, and optional dependencies, and then build the relationship tree.
-			The result should be a well-structured dependency tree free of unresolvable and circular dependencies.</p>
-			<pre><code class="language-ts"><span class="hljs-keyword">import</span> { DepResolver } <span class="hljs-keyword">from</span> <span class="hljs-string">'DepResolver'</span>
-<span class="hljs-keyword">const</span> tree = <span class="hljs-keyword">new</span> DepResolver()
-
-(<span class="hljs-keyword">async</span> () =&gt; {
-  <span class="hljs-keyword">await</span> tree.addInstance(<span class="hljs-string">'node 1'</span>)
-  <span class="hljs-keyword">await</span> tree.addInstance(<span class="hljs-string">'node 2'</span>, [], [<span class="hljs-string">'node 4'</span>]) <span class="hljs-comment">// has an optional dependency on "node 4", which will not exist</span>
-  <span class="hljs-keyword">await</span> tree.addInstance(<span class="hljs-string">'node 3'</span>, [<span class="hljs-string">'node 2'</span>])
-  <span class="hljs-keyword">await</span> tree.addInstance(<span class="hljs-string">'node 5'</span>, [<span class="hljs-string">'node 1'</span>, <span class="hljs-string">'node 2'</span>, <span class="hljs-string">'node 3'</span>])
-
-  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> tree.build()
-  <span class="hljs-built_in">console</span>.dir(res)
-})()
-
-<span class="hljs-comment">/*
-&gt; { nodes:
-   { 'node 1':
-      { name: 'node 1',
-        parents: {},
-        children: [Object],
-        allDescendants: [Object],
-        allAncestors: {},
-        _parentNames: [],
-        _optParentNames: [] },
-     'node 2':
-      { name: 'node 2',
-        parents: {},
-        children: [Object],
-        allDescendants: [Object],
-        allAncestors: {},
-        _parentNames: [],
-        _optParentNames: [Array] } },
-  nodeList:
-   { 'node 1':
-      { name: 'node 1',
-        parents: {},
-        children: [Object],
-        allDescendants: [Object],
-        allAncestors: {},
-        _parentNames: [],
-        _optParentNames: [] },
-     'node 2':
-      { name: 'node 2',
-        parents: {},
-        children: [Object],
-        allDescendants: [Object],
-        allAncestors: {},
-        _parentNames: [],
-        _optParentNames: [Array] },
-     'node 3':
-      { name: 'node 3',
-        parents: [Object],
-        children: [Object],
-        allDescendants: [Object],
-        allAncestors: [Object],
-        _parentNames: [Array],
-        _optParentNames: [] },
-     'node 5':
-      { name: 'node 5',
-        parents: [Object],
-        children: {},
-        allDescendants: {},
-        allAncestors: [Object],
-        _parentNames: [Array],
-        _optParentNames: [] } },
-  unlinkedNodes: [] }
- */</span>
-
-<span class="hljs-comment">// upon closer inspection of the tree, you'll notice that the node</span>
-<span class="hljs-comment">//   for 'node 2' contains its appropriate descendants in correct lineage, along with others.</span>
-<span class="hljs-comment">//</span>
-<span class="hljs-comment">// nodes will contain a hierarchial tree map, keyed by name of the node</span>
-<span class="hljs-comment">// nodeList will contain ALL nodes that were able to be mapped, keyed by the name of the node</span>
-<span class="hljs-comment">// unlinkedNodes will contain an array of all nodes which could not be mapped, such as if</span>
-<span class="hljs-comment">//   they had unresolvable dependencies or a circular dependency.</span></code></pre>
-			<h2 id="tests">tests</h2>
-			<p>use <code>npm t</code> to run unit tests</p>
-		</div>
-		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
+		<section class="tsd-panel tsd-hierarchy">
+			<h3>Hierarchy</h3>
+			<ul class="tsd-hierarchy">
+				<li>
+					<span class="target">DepResolverResult</span>
+				</li>
+			</ul>
+		</section>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
-						<h3>Classes</h3>
+						<h3>Properties</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-class"><a href="classes/depresolver.html" class="tsd-kind-icon">Dep<wbr>Resolver</a></li>
-							<li class="tsd-kind-class"><a href="classes/treeresolver.html" class="tsd-kind-icon">Tree<wbr>Resolver</a></li>
-						</ul>
-					</section>
-					<section class="tsd-index-section ">
-						<h3>Interfaces</h3>
-						<ul class="tsd-index-list">
-							<li class="tsd-kind-interface"><a href="interfaces/depnode.html" class="tsd-kind-icon">Dep<wbr>Node</a></li>
-							<li class="tsd-kind-interface"><a href="interfaces/depresolverresult.html" class="tsd-kind-icon">Dep<wbr>Resolver<wbr>Result</a></li>
-							<li class="tsd-kind-interface"><a href="interfaces/nodemap.html" class="tsd-kind-icon">Node<wbr>Map</a></li>
-							<li class="tsd-kind-interface"><a href="interfaces/treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a></li>
-							<li class="tsd-kind-interface"><a href="interfaces/treeresolverresult.html" class="tsd-kind-icon">Tree<wbr>Resolver<wbr>Result</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="depresolverresult.html#nodelist" class="tsd-kind-icon">node<wbr>List</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="depresolverresult.html#nodes" class="tsd-kind-icon">nodes</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="depresolverresult.html#unlinkednodes" class="tsd-kind-icon">unlinked<wbr>Nodes</a></li>
 						</ul>
 					</section>
 				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Properties</h2>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="nodelist" class="tsd-anchor"></a>
+				<h3>node<wbr>List</h3>
+				<div class="tsd-signature tsd-kind-icon">node<wbr>List<span class="tsd-signature-symbol">:</span> <a href="nodemap.html" class="tsd-signature-type">NodeMap</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in interfaces/DepResolverResult.ts:13</li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="nodes" class="tsd-anchor"></a>
+				<h3>nodes</h3>
+				<div class="tsd-signature tsd-kind-icon">nodes<span class="tsd-signature-symbol">:</span> <a href="nodemap.html" class="tsd-signature-type">NodeMap</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in interfaces/DepResolverResult.ts:12</li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<a name="unlinkednodes" class="tsd-anchor"></a>
+				<h3>unlinked<wbr>Nodes</h3>
+				<div class="tsd-signature tsd-kind-icon">unlinked<wbr>Nodes<span class="tsd-signature-symbol">:</span> <a href="depnode.html" class="tsd-signature-type">DepNode</a><span class="tsd-signature-symbol">[]</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in interfaces/DepResolverResult.ts:14</li>
+					</ul>
+				</aside>
 			</section>
 		</section>
 		<footer class="with-border-bottom">
