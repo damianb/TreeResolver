@@ -91,12 +91,7 @@ class TreeResolver {
                     node.parentNode = result.nodeList[node.parent];
                     node.allAncestors[node.parent] = node.parentNode;
                     // get rootNode ref from parent, or if parent doesn't have a rootNode, assume it *is* a rootNode
-                    if (node.parentNode.rootNode) {
-                        node.rootNode = node.parentNode.rootNode;
-                    }
-                    else {
-                        node.rootNode = node.parentNode;
-                    }
+                    node.rootNode = node.parentNode.rootNode || node.parentNode;
                     // add this node to every parent's .allDescendants property
                     let parentNode = node;
                     while (parentNode.parent !== null) {
