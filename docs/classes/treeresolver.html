@@ -933,13 +933,22 @@ img { max-width: 100%; }
 			<a href="../interfaces/depnode.html" class="tsd-kind-icon">Dep<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-interface">
+			<a href="../interfaces/depnodemap.html" class="tsd-kind-icon">Dep<wbr>Node<wbr>Map</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/depresolvequeue.html" class="tsd-kind-icon">Dep<wbr>Resolve<wbr>Queue</a>
+		</li>
+		<li class=" tsd-kind-interface">
 			<a href="../interfaces/depresolverresult.html" class="tsd-kind-icon">Dep<wbr>Resolver<wbr>Result</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/nodemap.html" class="tsd-kind-icon">Node<wbr>Map</a>
+			<a href="../interfaces/treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a>
 		</li>
 		<li class=" tsd-kind-interface">
-			<a href="../interfaces/treenode.html" class="tsd-kind-icon">Tree<wbr>Node</a>
+			<a href="../interfaces/treenodemap.html" class="tsd-kind-icon">Tree<wbr>Node<wbr>Map</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/treeresolvequeue.html" class="tsd-kind-icon">Tree<wbr>Resolve<wbr>Queue</a>
 		</li>
 		<li class=" tsd-kind-interface">
 			<a href="../interfaces/treeresolverresult.html" class="tsd-kind-icon">Tree<wbr>Resolver<wbr>Result</a>
@@ -993,7 +1002,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">nodes<span class="tsd-signature-symbol">:</span> <a href="../interfaces/treenode.html" class="tsd-signature-type">TreeNode</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/damianb/TreeResolver/blob/561fe80/src/TreeResolver.ts#L16">TreeResolver.ts:16</a></li>
+						<li>Defined in <a href="https://github.com/damianb/TreeResolver/blob/083abb4/src/TreeResolver.ts#L17">TreeResolver.ts:17</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1004,19 +1013,30 @@ img { max-width: 100%; }
 				<a name="addinstance" class="tsd-anchor"></a>
 				<h3>add<wbr>Instance</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Instance<span class="tsd-signature-symbol">(</span>instanceName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, instanceParent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, instance<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Instance<span class="tsd-signature-symbol">(</span>instanceName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, instanceParent<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, instance<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/damianb/TreeResolver/blob/561fe80/src/TreeResolver.ts#L25">TreeResolver.ts:25</a></li>
+								<li>Defined in <a href="https://github.com/damianb/TreeResolver/blob/083abb4/src/TreeResolver.ts#L38">TreeResolver.ts:38</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Add an instance to the resolution tree.</p>
 							</div>
+							<dl class="tsd-comment-tags">
+								<dt>example</dt>
+								<dd><pre><code>import { TreeResolver } from 'treeresolver'
+const tree = new TreeResolver()
+
+// add nodes to use when building the dependency tree with individual TreeResolver.addInstance() calls
+tree.addInstance('<span class="hljs-keyword">node</span> <span class="hljs-title">1</span>')
+tree.addInstance('<span class="hljs-keyword">node</span> <span class="hljs-title">2</span>', '<span class="hljs-keyword">node</span> <span class="hljs-title">1</span>')
+
+// ...</code></pre></dd>
+							</dl>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
@@ -1027,7 +1047,7 @@ img { max-width: 100%; }
 								</div>
 							</li>
 							<li>
-								<h5>instanceParent: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> instanceParent: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<p>The name of the parent of this instance.</p>
 								</div>
@@ -1035,11 +1055,11 @@ img { max-width: 100%; }
 							<li>
 								<h5><span class="tsd-flag ts-flagOptional">Optional</span> instance: <span class="tsd-signature-type">any</span></h5>
 								<div class="tsd-comment tsd-typography">
-									<p>An object instance to</p>
+									<p>An object instance to tie directly to the node, if desired.</p>
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -1053,13 +1073,27 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/damianb/TreeResolver/blob/561fe80/src/TreeResolver.ts#L55">TreeResolver.ts:55</a></li>
+								<li>Defined in <a href="https://github.com/damianb/TreeResolver/blob/083abb4/src/TreeResolver.ts#L96">TreeResolver.ts:96</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Build the dependency tree.</p>
 							</div>
+							<dl class="tsd-comment-tags">
+								<dt>example</dt>
+								<dd><pre><code><span class="hljs-keyword">import</span> { TreeResolver } <span class="hljs-keyword">from</span> <span class="hljs-string">'treeresolver'</span>
+<span class="hljs-keyword">const</span> tree = <span class="hljs-keyword">new</span> TreeResolver()
+
+tree.addInstance(<span class="hljs-string">'node 1'</span>)
+tree.addInstance(<span class="hljs-string">'node 2'</span>, <span class="hljs-string">'node 1'</span>)
+
+(<span class="hljs-keyword">async</span> () =&gt; {
+  <span class="hljs-comment">// build the tree, and then</span>
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> tree.build()
+  <span class="hljs-built_in">console</span>.dir(res)
+})()</code></pre></dd>
+							</dl>
 						</div>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/treeresolverresult.html" class="tsd-signature-type">TreeResolverResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
@@ -1069,21 +1103,34 @@ img { max-width: 100%; }
 				<a name="clear" class="tsd-anchor"></a>
 				<h3>clear</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">clear<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">clear<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/damianb/TreeResolver/blob/561fe80/src/TreeResolver.ts#L47">TreeResolver.ts:47</a></li>
+								<li>Defined in <a href="https://github.com/damianb/TreeResolver/blob/083abb4/src/TreeResolver.ts#L73">TreeResolver.ts:73</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Clears out all added instances, to allow the resolver to start fresh.</p>
 							</div>
+							<dl class="tsd-comment-tags">
+								<dt>example</dt>
+								<dd><pre><code>import { TreeResolver } from 'treeresolver'
+const tree = new TreeResolver()
+
+tree.addInstance('<span class="hljs-keyword">node</span> <span class="hljs-title">1</span>')
+tree.addInstance('<span class="hljs-keyword">node</span> <span class="hljs-title">2</span>', '<span class="hljs-keyword">node</span> <span class="hljs-title">1</span>')
+
+// ...
+
+// actually, we changed our mind, clear out all the nodes to process.
+tree.clear()</code></pre></dd>
+							</dl>
 						</div>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 					</li>
 				</ul>
 			</section>
