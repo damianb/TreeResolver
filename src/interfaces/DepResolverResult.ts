@@ -6,10 +6,10 @@
 //
 
 import { DepNode } from './DepNode'
-import { NodeMap } from './NodeMap'
+import { DepNodeMap } from './DepNodeMap'
 
 export interface DepResolverResult {
-  nodes: NodeMap
-  nodeList: NodeMap
+  nodes: DepNodeMap
+  nodeList: DepNodeMap
   unlinkedNodes: DepNode[]
 }
