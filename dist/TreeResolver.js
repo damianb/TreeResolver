@@ -18,10 +18,22 @@ class TreeResolver {
      * Add an instance to the resolution tree.
      * @param  {string} instanceName - The name of this instance.
      * @param  {string | null} instanceParent - The name of the parent of this instance.
-     * @param  {any} instance - An object instance to
-     * @return {Promise<void>}
+     * @param  {any} instance - An object instance to tie directly to the node, if desired.
+     * @return {void}
+     *
+     * @example
+     * ```
+     * import { TreeResolver } from 'treeresolver'
+     * const tree = new TreeResolver()
+     *
+     * // add nodes to use when building the dependency tree with individual TreeResolver.addInstance() calls
+     * tree.addInstance('node 1')
+     * tree.addInstance('node 2', 'node 1')
+     *
+     * // ...
+     * ```
      */
-    async addInstance(instanceName, instanceParent, instance) {
+    addInstance(instanceName, instanceParent = null, instance) {
         let node = {
             name: instanceName,
             parent: instanceParent,
@@ -29,23 +41,50 @@ class TreeResolver {
             rootNode: null,
             children: {},
             allDescendants: {},
-            allAncestors: {}
+            allAncestors: {},
+            instance: instance
         };
-        if (instance) {
-            node.instance = instance;
-        }
         this.nodes.push(node);
     }
     /**
      * Clears out all added instances, to allow the resolver to start fresh.
-     * @return {Promise<void>}
+     * @return {void}
+     *
+     * @example
+     * ```
+     * import { TreeResolver } from 'treeresolver'
+     * const tree = new TreeResolver()
+     *
+     * tree.addInstance('node 1')
+     * tree.addInstance('node 2', 'node 1')
+     *
+     * // ...
+     *
+     * // actually, we changed our mind, clear out all the nodes to process.
+     * tree.clear()
+     * ```
      */
-    async clear() {
+    clear() {
         this.nodes = [];
     }
     /**
      * Build the dependency tree.
      * @return {Promise<TreeResolverResult>}
+     *
+     * @example
+     * ```
+     * import { TreeResolver } from 'treeresolver'
+     * const tree = new TreeResolver()
+     *
+     * tree.addInstance('node 1')
+     * tree.addInstance('node 2', 'node 1')
+     *
+     * (async () => {
+     *   // build the tree, and then
+     *   const res = await tree.build()
+     *   console.dir(res)
+     * })()
+     * ```
      */
     async build() {
         let result = {

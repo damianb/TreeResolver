@@ -1,10 +1,7 @@
 import { TreeNode } from './TreeNode';
+import { TreeNodeMap } from './TreeNodeMap';
 export interface TreeResolverResult {
-    nodes: {
-        [index: string]: TreeNode;
-    };
-    nodeList: {
-        [index: string]: TreeNode;
-    };
+    nodes: TreeNodeMap;
+    nodeList: TreeNodeMap;
     unlinkedNodes: TreeNode[];
 }
