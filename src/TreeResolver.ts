@@ -6,6 +6,7 @@
 //
 
 import { TreeNode } from './interfaces/TreeNode'
+import { TreeResolveQueue } from './interfaces/TreeResolveQueue'
 import { TreeResolverResult } from './interfaces/TreeResolverResult'
 
 /**
@@ -19,22 +20,33 @@ export class TreeResolver {
    * Add an instance to the resolution tree.
    * @param  {string} instanceName - The name of this instance.
    * @param  {string | null} instanceParent - The name of the parent of this instance.
-   * @param  {any} instance - An object instance to
-   * @return {Promise<void>}
+   * @param  {any} instance - An object instance to tie directly to the node, if desired.
+   * @return {void}
+   *
+   * @example
+   * ```
+   * import { TreeResolver } from 'treeresolver'
+   * const tree = new TreeResolver()
+   *
+   * // add nodes to use when building the dependency tree with individual TreeResolver.addInstance() calls
+   * tree.addInstance('node 1')
+   * tree.addInstance('node 2', 'node 1')
+   *
+   * // ...
+   * ```
    */
-  public async addInstance (instanceName: string, instanceParent: string | null, instance?: any): Promise<void> {
+  public addInstance (instanceName: string, instanceParent: string | null = null, instance?: any): void {
     let node: TreeNode = {
       name: instanceName,
       parent: instanceParent,
       parentNode: null,
       rootNode: null,
       children: {},
-      allDescendants: {},
-      allAncestors: {}
-    }
 
-    if (instance) {
-      node.instance = instance
+      allDescendants: {},
+      allAncestors: {},
+
+      instance: instance
     }
 
     this.nodes.push(node)
@@ -42,15 +54,44 @@ export class TreeResolver {
 
   /**
    * Clears out all added instances, to allow the resolver to start fresh.
-   * @return {Promise<void>}
+   * @return {void}
+   *
+   * @example
+   * ```
+   * import { TreeResolver } from 'treeresolver'
+   * const tree = new TreeResolver()
+   *
+   * tree.addInstance('node 1')
+   * tree.addInstance('node 2', 'node 1')
+   *
+   * // ...
+   *
+   * // actually, we changed our mind, clear out all the nodes to process.
+   * tree.clear()
+   * ```
    */
-  public async clear (): Promise<void> {
+  public clear (): void {
     this.nodes = []
   }
 
   /**
    * Build the dependency tree.
    * @return {Promise<TreeResolverResult>}
+   *
+   * @example
+   * ```
+   * import { TreeResolver } from 'treeresolver'
+   * const tree = new TreeResolver()
+   *
+   * tree.addInstance('node 1')
+   * tree.addInstance('node 2', 'node 1')
+   *
+   * (async () => {
+   *   // build the tree, and then
+   *   const res = await tree.build()
+   *   console.dir(res)
+   * })()
+   * ```
    */
   public async build (): Promise<TreeResolverResult> {
     let result: TreeResolverResult = {
@@ -58,7 +99,7 @@ export class TreeResolver {
       nodeList: {},
       unlinkedNodes: []
     }
-    let resolveQueue: { [index: string]: TreeNode[] } = {}
+    let resolveQueue: TreeResolveQueue = {}
     let keyQueue: string[] = []
 
     // -- linker, first pass

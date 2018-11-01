@@ -5,15 +5,15 @@
 // @license MIT license
 //
 
-import { NodeMap } from './NodeMap'
+import { DepNodeMap } from './DepNodeMap'
 
 export interface DepNode {
   instance?: any
   name: string
-  parents: NodeMap
-  children: NodeMap
-  allDescendants: NodeMap
-  allAncestors: NodeMap
+  parents: DepNodeMap
+  children: DepNodeMap
+  allDescendants: DepNodeMap
+  allAncestors: DepNodeMap
 
   _parentNames: string[]
   _optParentNames: string[]

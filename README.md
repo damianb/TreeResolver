@@ -24,10 +24,10 @@ import { TreeResolver } from 'TreeResolver'
 const tree = new TreeResolver()
 
 (async () => {
-  await tree.addInstance('node 1')
-  await tree.addInstance('node 2', 'node 1')
-  await tree.addInstance('node 3', 'node 4') // node 4 does not exist...
-  await tree.addInstance('node 5', 'node 2')
+  tree.addInstance('node 1')
+  tree.addInstance('node 2', 'node 1')
+  tree.addInstance('node 3', 'node 4') // node 4 does not exist...
+  tree.addInstance('node 5', 'node 2')
 
   const res = await tree.build()
   console.dir(res)
@@ -101,10 +101,10 @@ import { DepResolver } from 'DepResolver'
 const tree = new DepResolver()
 
 (async () => {
-  await tree.addInstance('node 1')
-  await tree.addInstance('node 2', [], ['node 4']) // has an optional dependency on "node 4", which will not exist
-  await tree.addInstance('node 3', ['node 2'])
-  await tree.addInstance('node 5', ['node 1', 'node 2', 'node 3'])
+  tree.addInstance('node 1')
+  tree.addInstance('node 2', [], ['node 4']) // has an optional dependency on "node 4", which will not exist
+  tree.addInstance('node 3', ['node 2'])
+  tree.addInstance('node 5', ['node 1', 'node 2', 'node 3'])
 
   const res = await tree.build()
   console.dir(res)

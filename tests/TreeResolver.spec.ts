@@ -15,8 +15,11 @@ const wrapInstanceHelper = (instance: InstanceInput): TreeNode => {
     parentNode: null,
     rootNode: null,
     children: {},
+
     allDescendants: {},
-    allAncestors: {}
+    allAncestors: {},
+
+    instance: undefined
   }
 }
 

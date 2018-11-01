@@ -6,6 +6,7 @@
 //
 
 import { DepNode } from './interfaces/DepNode'
+import { DepResolveQueue } from './interfaces/DepResolveQueue'
 import { DepResolverResult } from './interfaces/DepResolverResult'
 
 /**
@@ -13,17 +14,41 @@ import { DepResolverResult } from './interfaces/DepResolverResult'
  *   made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.
  */
 export class DepResolver {
-  protected nodes: DepNode[] = []
+  protected ingestNodes: DepNode[] = []
 
   /**
    * Add an instance to the resolution tree.
    * @param  {string} instanceName - The name of this instance.
-   * @param  {string[]} instanceParents - The name of the parents of this instance.
-   * @param  {string[]} instanceOptParents - The name of any optional parents of this instance.
+   * @param  {string[] | string | undefined} instanceParents - (optional) The name of the parents of this instance. Coerced into an array if a single string is provided.
+   * @param  {string[] | string | undefined} instanceOptParents - (optional) The name of any optional parents of this instance. Coerced into an array if a single string is provided.
    * @param  {any} instance - An object or anything really to tie to this instance.
-   * @return {Promise<void>}
+   * @return {void}
+   *
+   * @example
+   * ```
+   * import { DepResolver } from 'treeresolver'
+   * const tree = new DepResolver()
+   *
+   * // add nodes to use when building the dependency tree with individual DepResolver.addInstance() calls
+   * tree.addInstance('node 1')
+   * tree.addInstance('node 2', ['node 1'])
+   * tree.addInstance('node 3', ['node 1', 'node 2'])
+   *
+   * // ...
+   * ```
    */
-  public async addInstance (instanceName: string, instanceParents?: string[], instanceOptParents?: string[], instance?: any): Promise<void> {
+  public addInstance (instanceName: string, instanceParents?: string[] | string, instanceOptParents?: string[] | string, instance?: any): void {
+    let _parentNames: string[] = []
+    let _optParentNames: string[] = []
+
+    if (instanceParents !== undefined) {
+      _parentNames = !Array.isArray(instanceParents) ? [instanceParents] : instanceParents
+    }
+
+    if (instanceOptParents !== undefined) {
+      _optParentNames = !Array.isArray(instanceOptParents) ? [instanceOptParents] : instanceOptParents
+    }
+
     let node: DepNode = {
       name: instanceName,
       parents: {},
@@ -31,26 +56,56 @@ export class DepResolver {
       allDescendants: {},
       allAncestors: {},
 
-      _parentNames: instanceParents || [],
-      _optParentNames: instanceOptParents || [],
+      _parentNames: _parentNames,
+      _optParentNames: _optParentNames,
 
       instance: instance
     }
 
-    this.nodes.push(node)
+    this.ingestNodes.push(node)
   }
 
   /**
    * Clears out all added instances, to allow the resolver to start fresh.
-   * @return {Promise<void>}
+   * @return {void}
+   *
+   * @example
+   * ```
+   * import { DepResolver } from 'treeresolver'
+   * const tree = new DepResolver()
+   *
+   * tree.addInstance('node 1')
+   * tree.addInstance('node 2', ['node 1'])
+   *
+   * // ...
+   *
+   * // actually, we changed our mind, clear out all the nodes to process.
+   * tree.clear()
+   * ```
    */
-  public async clear (): Promise<void> {
-    this.nodes = []
+  public clear (): void {
+    this.ingestNodes = []
   }
 
   /**
    * Build the dependency tree.
    * @return {Promise<DepResolverResult>}
+   *
+   * @example
+   * ```
+   * import { DepResolver } from 'treeresolver'
+   * const tree = new DepResolver()
+   *
+   * tree.addInstance('node 1')
+   * tree.addInstance('node 2', ['node 1'])
+   * tree.addInstance('node 3', ['node 1', 'node 2'])
+   *
+   * (async () => {
+   *   // build the tree, and then
+   *   const res = await tree.build()
+   *   console.dir(res)
+   * })()
+   * ```
    */
   public async build (): Promise<DepResolverResult> {
     let result: DepResolverResult = {
@@ -58,14 +113,14 @@ export class DepResolver {
       nodeList: {},
       unlinkedNodes: []
     }
-    let resolveQueue: { [index: string]: string[] } = {}
+    let resolveQueue: DepResolveQueue = {}
     let keyQueue: string[] = []
 
     // -- linker, first pass
     // sort everything out into the resolveQueue...
     //   resolveQueue will contain our "buckets" of processing, where during the second pass
     //   we'll iterate what's available in resolvedTree and then handle what's in the resolveQueue afterwards
-    let promises = this.nodes.map(async (node: DepNode) => {
+    let promises = this.ingestNodes.map(async (node: DepNode) => {
       // orphan nodes are our roots for the tree - everything else MUST depend on them
       //   if something does not depend on a root (eventually), it will be considered an "unlinked node"
       if (node._parentNames.length === 0) {

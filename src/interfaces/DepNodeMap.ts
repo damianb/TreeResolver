@@ -7,6 +7,6 @@
 
 import { DepNode } from './DepNode'
 
-export interface NodeMap {
+export interface DepNodeMap {
   [index: string]: DepNode
 }
