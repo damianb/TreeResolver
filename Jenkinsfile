@@ -16,7 +16,7 @@ pipeline {
   }
   agent {
     docker {
-      image 'node:8.12.0-alpine'
+      image 'node:8.15-alpine'
     }
   }
   environment {
@@ -47,6 +47,14 @@ pipeline {
         stage('Test') {
           steps {
             sh 'npm run unit'
+          }
+        }
+        stage('Trigger Sonarqube') {
+          when {
+            branch 'master'
+          }
+          steps {
+            build job: '/TreeResolver-sonar', parameters: [string(name: 'GIT_COMMIT', value: "${GIT_COMMIT}")], propagate: false, wait: false
           }
         }
       }
