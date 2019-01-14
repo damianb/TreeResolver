@@ -10,8 +10,17 @@ pipeline {
     failure {
       updateGitlabCommitStatus name: 'jenkins', state: 'failed'
     }
+    failure {
+      updateGitlabCommitStatus name: 'jenkins', state: 'failed'
+    }
+    aborted {
+      updateGitlabCommitStatus name: 'jenkins', state: 'canceled'
+    }
     success {
       updateGitlabCommitStatus name: 'jenkins', state: 'success'
+    }
+    always {
+      cleanWs()
     }
   }
   agent {
