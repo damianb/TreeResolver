@@ -10,7 +10,7 @@ pipeline {
     failure {
       updateGitlabCommitStatus name: 'jenkins', state: 'failed'
     }
-    failure {
+    unstable {
       updateGitlabCommitStatus name: 'jenkins', state: 'failed'
     }
     aborted {
