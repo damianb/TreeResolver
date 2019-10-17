@@ -125,3 +125,17 @@ pipeline {
     }
   }
 }
+
+@NonCPS
+def getCoverage(String file) {
+  def xml = new XmlParser(false, true, true)
+  xml.setFeature('http://apache.org/xml/features/disallow-doctype-decl', false)
+  xml.setFeature('http://apache.org/xml/features/nonvalidating/load-external-dtd', false)
+  def node = xml.parse(file)
+
+  BigDecimal coverage = (node.attribute('branches-covered').toBigDecimal() / node.attribute('branches-valid').toBigDecimal()) * 100
+  xml = null
+  node = null
+
+  return coverage.setScale(2, RoundingMode.HALF_UP).doubleValue()
+}
