@@ -62,7 +62,8 @@ pipeline {
           sonar.projectKey=katana:treeresolver
           sonar.projectName=TreeResolver
           sonar.login=${SONARQUBE_API_TOKEN}
-          sonar.sourceEncoding=UTF-8sonar.language=ts
+          sonar.sourceEncoding=UTF-8
+          sonar.language=ts
           sonar.sources=src
           sonar.tests=tests
           sonar.typescript.lcov.reportPaths=./coverage/lcov.info
