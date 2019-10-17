@@ -25,25 +25,32 @@
     "build": "tsc -p ./tsconfig.json",
     "clean": "rimraf ./dist/* && mkdirp ./dist",
     "style": "tslint ./src/*.ts -p ./tsconfig.json",
-    "unit": "mocha --require ts-node/register ./tests/*.spec.ts",
-    "test": "npm run clean && npm run build && npm run style && npm run unit",
+    "unit": "cross-env NODE_ENV=test nyc mocha  --opts tests/mocha.opts --reporter-options configFile=tests/mocha.json ./tests/*.spec.ts",
+    "test": "yarn run clean && yarn run build && yarn run style && yarn run unit",
     "todo": "fixme --path ./ src/**/*.ts src/*.ts --skip note",
-    "prepublishOnly": "npm run clean && npm run docs && npm run build && npm run style && npm run unit"
+    "prepublishOnly": "yarn run clean && yarn run docs && yarn run build && yarn run style && yarn run unit"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.3",
-    "@types/mocha": "^5.2.0",
-    "@types/node": "10.0.3",
-    "chai": "^4.1.2",
-    "cross-env": "^5.1.4",
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@types/chai": "^4.2.3",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.1",
+    "chai": "^4.2.0",
+    "cross-env": "^6.0.3",
     "fixme": "^0.5.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^5.1.1",
-    "rimraf": "^2.6.2",
-    "ts-node": "^6.0.2",
-    "tslint": "^5.8.0",
-    "tslint-config-standard": "^7.0.0",
-    "typedoc": "^0.12.0",
-    "typescript": "^2.8.3"
+    "mocha": "^6.2.1",
+    "mocha-junit-reporter": "^1.23.1",
+    "mocha-multi-reporters": "^1.1.7",
+    "nyc": "^14.1.1",
+    "rimraf": "^3.0.0",
+    "ts-node": "^7",
+    "tslint": "^5.20.0",
+    "tslint-config-standard": "^8.0.1",
+    "typedoc": "^0.15.0",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "source-map-support": "^0.5.10"
   }
 }
