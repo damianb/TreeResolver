@@ -175,4 +175,4 @@ const tree = new DepResolver()
 
 ## tests
 
-use `npm t` to run unit tests
+use `yarn test` to run unit tests
