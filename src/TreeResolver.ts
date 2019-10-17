@@ -70,6 +70,7 @@ export class TreeResolver {
    * tree.clear()
    * ```
    */
+  /* istanbul ignore next */
   public clear (): void {
     this.nodes = []
   }
@@ -110,6 +111,7 @@ export class TreeResolver {
       // orphan nodes are our roots for the tree - everything else MUST depend on them
       //   if something does not depend on a root (eventually), it will be considered an "unlinked node"
       if (!node.parent) {
+        /* istanbul ignore else */
         if (!resolveQueue[node.name]) {
           resolveQueue[node.name] = []
         }
@@ -137,6 +139,7 @@ export class TreeResolver {
         resolveQueue[processKey].forEach((node: TreeNode) => {
           // minor guard, unnecessary except TypeScript can't comprehend
           //   that we guarded against it in the first pass
+          /* istanbul ignore next */
           if (node.parent === null) { return }
 
           result.nodeList[node.parent].children[node.name] = node
@@ -152,6 +155,7 @@ export class TreeResolver {
           let parentNode = node
           while (parentNode.parent !== null) {
             // more guarding because TypeScript is stupid...
+            /* istanbul ignore next */
             if (!parentNode.parentNode) { break }
             parentNode = parentNode.parentNode
 

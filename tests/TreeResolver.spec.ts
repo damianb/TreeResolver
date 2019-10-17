@@ -54,7 +54,11 @@ describe('TreeResolver', () => {
 
     const tree = new TreeResolver()
     await Promise.all(instances.map((instance: InstanceInput) => {
-      return tree.addInstance(instance.name, instance.parent || null)
+      if(instance.parent) {
+        return tree.addInstance(instance.name, instance.parent)
+      } else {
+        return tree.addInstance(instance.name)
+      }
     }))
     const res = await tree.build()
     nodes = res.nodes

@@ -31,13 +31,25 @@ pipeline {
   }
   environment {
     CI = 'true'
+    NPM_BIN = './node_modules/.bin'
   }
   stages {
     stage('Prepare') {
       steps {
         updateGitlabCommitStatus name: 'sonar', state: 'running'
-
+        sh 'node --version && npm --version && yarn --version'
         sh 'yarn --offline'
+      }
+    }
+
+    stage('Generate coverage') {
+      steps {
+        sh """
+          $NPM_BIN/nyc $NPM_BIN/mocha \
+            --opts tests/ci.mocha.opts \
+            --reporter-options configFile=tests/mocha.json \
+            ./tests/*.spec.ts
+        """.stripIndent()
       }
     }
 
@@ -50,9 +62,10 @@ pipeline {
           sonar.projectKey=katana:treeresolver
           sonar.projectName=TreeResolver
           sonar.login=${SONARQUBE_API_TOKEN}
-          sonar.projectVersion=1.0
-          sonar.sourceEncoding=UTF-8
-          sonar.sources=.
+          sonar.sourceEncoding=UTF-8sonar.language=ts
+          sonar.sources=src
+          sonar.tests=tests
+          sonar.typescript.lcov.reportPaths=./coverage/lcov.info
 
           sonar.exclusions=node_modules/**,tests/**,docs/**,dist/**
           CONF

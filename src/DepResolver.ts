@@ -41,10 +41,12 @@ export class DepResolver {
     let _parentNames: string[] = []
     let _optParentNames: string[] = []
 
+    /* istanbul ignore else */
     if (instanceParents !== undefined) {
       _parentNames = !Array.isArray(instanceParents) ? [instanceParents] : instanceParents
     }
 
+    /* istanbul ignore else */
     if (instanceOptParents !== undefined) {
       _optParentNames = !Array.isArray(instanceOptParents) ? [instanceOptParents] : instanceOptParents
     }
@@ -83,6 +85,7 @@ export class DepResolver {
    * tree.clear()
    * ```
    */
+  /* istanbul ignore next */
   public clear (): void {
     this.ingestNodes = []
   }
@@ -124,6 +127,7 @@ export class DepResolver {
       // orphan nodes are our roots for the tree - everything else MUST depend on them
       //   if something does not depend on a root (eventually), it will be considered an "unlinked node"
       if (node._parentNames.length === 0) {
+        /* istanbul ignore else */
         if (!resolveQueue[node.name]) {
           resolveQueue[node.name] = []
         }
