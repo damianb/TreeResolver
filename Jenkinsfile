@@ -90,17 +90,6 @@ pipeline {
             }
           }
         }
-        stage('Trigger Sonarqube') {
-          when {
-            branch 'master'
-          }
-          steps {
-            build job: '/TreeResolver-sonar',
-              parameters: [string(name: 'GIT_COMMIT', value: "${GIT_COMMIT}")],
-              propagate: false,
-              wait: false
-          }
-        }
       }
     }
 
