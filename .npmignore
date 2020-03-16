@@ -3,7 +3,7 @@ coverage/*
 docs/*
 node_modules/*
 src/*
-test/*
+tests/*
 .directory
 .gitignore
 .yarnrc
@@ -12,3 +12,4 @@ tsconfig.json
 .eslintrc
 test-results.xml
 .nyc_output
+yarn-error.log
