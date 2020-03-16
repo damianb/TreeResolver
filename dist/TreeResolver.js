@@ -34,7 +34,7 @@ class TreeResolver {
      * ```
      */
     addInstance(instanceName, instanceParent = null, instance) {
-        let node = {
+        const node = {
             name: instanceName,
             parent: instanceParent,
             parentNode: null,
@@ -87,19 +87,21 @@ class TreeResolver {
      * })()
      * ```
      */
+    // todo: switch from async when we can break API compat
+    // eslint-disable-next-line @typescript-eslint/require-await
     async build() {
-        let result = {
+        const result = {
             nodes: {},
             nodeList: {},
             unlinkedNodes: []
         };
-        let resolveQueue = {};
-        let keyQueue = [];
+        const resolveQueue = {};
+        const keyQueue = [];
         // -- linker, first pass
         // sort everything out into the resolveQueue...
         //   resolveQueue will contain our "buckets" of processing, where during the second pass
         //   we'll iterate what's available in resolvedTree and then handle what's in the resolveQueue afterwards
-        const promises = this.nodes.map(async (node) => {
+        this.nodes.forEach((node) => {
             // orphan nodes are our roots for the tree - everything else MUST depend on them
             //   if something does not depend on a root (eventually), it will be considered an "unlinked node"
             if (!node.parent) {
@@ -118,7 +120,7 @@ class TreeResolver {
             }
             result.nodeList[node.name] = node;
         });
-        await Promise.all(promises);
+        // await Promise.all(promises)
         // -- linker, second pass
         // unfortunately, we cannot use a foreach, for, or any other reasonable loop.
         //   we're forced to use a while loop in order to construct a "pump" queue structure for processing.
@@ -137,6 +139,7 @@ class TreeResolver {
                     node.parentNode = result.nodeList[node.parent];
                     node.allAncestors[node.parent] = node.parentNode;
                     // get rootNode ref from parent, or if parent doesn't have a rootNode, assume it *is* a rootNode
+                    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
                     node.rootNode = node.parentNode.rootNode || node.parentNode;
                     // add this node to every parent's .allDescendants property
                     let parentNode = node;
@@ -154,6 +157,7 @@ class TreeResolver {
                 });
             }
             // we'll delete each set of entries in the resolveQueue so that whatever's left is only the unlinked nodes
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete resolveQueue[processKey];
             processKey = keyQueue.shift();
         }
