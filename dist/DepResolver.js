@@ -46,7 +46,7 @@ class DepResolver {
         if (instanceOptParents !== undefined) {
             _optParentNames = !Array.isArray(instanceOptParents) ? [instanceOptParents] : instanceOptParents;
         }
-        let node = {
+        const node = {
             name: instanceName,
             parents: {},
             children: {},
@@ -100,19 +100,21 @@ class DepResolver {
      * })()
      * ```
      */
+    // todo: switch from async when we can break API compat
+    // eslint-disable-next-line @typescript-eslint/require-await
     async build() {
-        let result = {
+        const result = {
             nodes: {},
             nodeList: {},
             unlinkedNodes: []
         };
-        let resolveQueue = {};
-        let keyQueue = [];
+        const resolveQueue = {};
+        const keyQueue = [];
         // -- linker, first pass
         // sort everything out into the resolveQueue...
         //   resolveQueue will contain our "buckets" of processing, where during the second pass
         //   we'll iterate what's available in resolvedTree and then handle what's in the resolveQueue afterwards
-        let promises = this.ingestNodes.map(async (node) => {
+        this.ingestNodes.forEach((node) => {
             // orphan nodes are our roots for the tree - everything else MUST depend on them
             //   if something does not depend on a root (eventually), it will be considered an "unlinked node"
             if (node._parentNames.length === 0) {
@@ -133,7 +135,7 @@ class DepResolver {
             }
             result.nodeList[node.name] = node;
         });
-        await Promise.all(promises);
+        // await Promise.all(promises)
         // -- linker, second pass
         // unfortunately, we cannot use a foreach, for, or any other reasonable loop.
         //   we're forced to use a while loop in order to construct a "pump" queue structure for processing.
@@ -157,6 +159,7 @@ class DepResolver {
                 });
             }
             // we'll delete each set of entries in the resolveQueue so that whatever's left is only the unlinked nodes
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete resolveQueue[processKey];
             processKey = keyQueue.shift();
         }
