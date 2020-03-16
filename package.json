@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/damianb/TreeResolver#readme",
   "scripts": {
-    "docs": "typedoc --out docs/ --mode file ./src/ --theme minimal",
+    "docs": "typedoc ./src/",
     "build": "tsc -p ./tsconfig.json",
     "clean": "rimraf ./dist/* && mkdirp ./dist",
     "style": "eslint ./src/*.ts",

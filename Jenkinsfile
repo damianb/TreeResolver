@@ -57,20 +57,14 @@ pipeline {
       parallel {
         stage('Lint') {
           steps {
-            sh """
-              $NPM_BIN/tslint \
-                ./src/*.ts \
-                -c ./tslint.json \
-                -p ./tsconfig.json \
-                --project
-            """.stripIndent()
+            sh "$NPM_BIN/eslint ./src/*.ts"
           }
         }
         stage('Unit tests') {
           steps {
             sh """
               $NPM_BIN/nyc $NPM_BIN/mocha \
-                --opts tests/ci.mocha.opts \
+                --config test/.ci.mocharc.json \
                 --reporter-options configFile=tests/mocha.json \
                 ./tests/*.spec.ts
             """.stripIndent()
@@ -97,12 +91,7 @@ pipeline {
       parallel {
         stage('Build Docs') {
           steps {
-            sh """
-              $NPM_BIN/typedoc \
-                --out docs/ \
-                --mode file ./src/ \
-                --theme minimal
-            """.stripIndent()
+            sh "$NPM_BIN/typedoc ./src/"
           }
         }
         stage('Build JS') {
