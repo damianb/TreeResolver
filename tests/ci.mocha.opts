@@ -1,6 +1,0 @@
---require source-map-support/register
---reporter mocha-multi-reporters
---forbid-only
---trace-deprecation
---ui bdd
---timeout 10s
