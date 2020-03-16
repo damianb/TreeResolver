@@ -1,6 +1,6 @@
 {
   "name": "treeresolver",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "TreeResolver is a dependency resolution library, made to resolve dependencies optimally whilst detecting unresolvable or circular dependencies.",
   "license": "MIT",
   "author": "Damian Bushong <katana@odios.us>",
