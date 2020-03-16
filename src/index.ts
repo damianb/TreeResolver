@@ -5,6 +5,8 @@
 // @license MIT license
 //
 
+// istanbul ignore file
+
 export { DepNode } from './interfaces/DepNode'
 export { DepResolver } from './DepResolver'
 export { DepResolverResult } from './interfaces/DepResolverResult'

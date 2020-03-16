@@ -5,6 +5,8 @@
 // @license MIT license
 //
 
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+
 import { DepNode } from './interfaces/DepNode'
 import { DepResolveQueue } from './interfaces/DepResolveQueue'
 import { DepResolverResult } from './interfaces/DepResolverResult'
@@ -51,7 +53,7 @@ export class DepResolver {
       _optParentNames = !Array.isArray(instanceOptParents) ? [instanceOptParents] : instanceOptParents
     }
 
-    let node: DepNode = {
+    const node: DepNode = {
       name: instanceName,
       parents: {},
       children: {},
@@ -110,20 +112,22 @@ export class DepResolver {
    * })()
    * ```
    */
+  // todo: switch from async when we can break API compat
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async build (): Promise<DepResolverResult> {
-    let result: DepResolverResult = {
+    const result: DepResolverResult = {
       nodes: {},
       nodeList: {},
       unlinkedNodes: []
     }
-    let resolveQueue: DepResolveQueue = {}
-    let keyQueue: string[] = []
+    const resolveQueue: DepResolveQueue = {}
+    const keyQueue: string[] = []
 
     // -- linker, first pass
     // sort everything out into the resolveQueue...
     //   resolveQueue will contain our "buckets" of processing, where during the second pass
     //   we'll iterate what's available in resolvedTree and then handle what's in the resolveQueue afterwards
-    let promises = this.ingestNodes.map(async (node: DepNode) => {
+    this.ingestNodes.forEach((node: DepNode) => {
       // orphan nodes are our roots for the tree - everything else MUST depend on them
       //   if something does not depend on a root (eventually), it will be considered an "unlinked node"
       if (node._parentNames.length === 0) {
@@ -146,7 +150,7 @@ export class DepResolver {
 
       result.nodeList[node.name] = node
     })
-    await Promise.all(promises)
+    // await Promise.all(promises)
 
     // -- linker, second pass
     // unfortunately, we cannot use a foreach, for, or any other reasonable loop.
@@ -177,6 +181,7 @@ export class DepResolver {
       }
 
       // we'll delete each set of entries in the resolveQueue so that whatever's left is only the unlinked nodes
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete resolveQueue[processKey]
 
       processKey = keyQueue.shift()
