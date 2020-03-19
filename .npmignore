@@ -12,4 +12,7 @@ tsconfig.json
 .eslintrc
 test-results.xml
 .nyc_output
+.nycrc.json
+.editorconfig
+typedoc.json
 yarn-error.log
